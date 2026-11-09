@@ -18,8 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f1xx_hal_gpio.h"
+#include "stm32f1xx_hal_tim.h"
 #include "tim.h"
 #include "gpio.h"
+#include <stdint.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -33,7 +36,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define SG90_MIN 500
+#define SG90_MAX 2500
+#define SG90_STEP 500
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,7 +49,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint16_t sg90_angle = 500;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,13 +94,43 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle );
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    if(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin) == GPIO_PIN_SET)
+    {
+      if(sg90_angle == SG90_MAX)
+      {
+        sg90_angle = SG90_MIN;
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
+      }
+      else 
+      {
+        sg90_angle += 500;
+         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
+      }
+      while(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin) == GPIO_PIN_SET);
+    }
+    if(HAL_GPIO_ReadPin(GPIOC, KEY2_Pin) == GPIO_PIN_SET)
+    {
+      if(sg90_angle == SG90_MIN)
+      {
+        sg90_angle = SG90_MAX;
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
+      }
+      else 
+      {
+        sg90_angle -= 500;
+         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
+      }
+      while(HAL_GPIO_ReadPin(GPIOC, KEY2_Pin) == GPIO_PIN_SET);
+    }
+    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
