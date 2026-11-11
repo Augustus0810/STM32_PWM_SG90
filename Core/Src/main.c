@@ -110,7 +110,7 @@ int main(void)
         sg90_angle = SG90_MIN;
         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
         HAL_GPIO_WritePin(GPIOA, LED_B_Pin, GPIO_PIN_RESET);
-        HAL_Delay(500);
+        HAL_Delay(200);
         HAL_GPIO_TogglePin(GPIOA, LED_B_Pin);
       }
       else 
@@ -118,7 +118,7 @@ int main(void)
         sg90_angle += 500;
         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
         HAL_GPIO_WritePin(GPIOA, LED_G_Pin, GPIO_PIN_RESET);
-        HAL_Delay(500);
+        HAL_Delay(200);
         HAL_GPIO_TogglePin(GPIOA, LED_G_Pin);
       }
       while(HAL_GPIO_ReadPin(GPIOA, KEY1_Pin) == GPIO_PIN_SET);
@@ -130,7 +130,7 @@ int main(void)
         sg90_angle = SG90_MAX;
         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
         HAL_GPIO_WritePin(GPIOA, LED_B_Pin, GPIO_PIN_RESET);
-        HAL_Delay(500);
+        HAL_Delay(200);
         HAL_GPIO_TogglePin(GPIOA, LED_B_Pin);
       }
       else 
@@ -138,7 +138,7 @@ int main(void)
         sg90_angle -= 500;
         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sg90_angle);
         HAL_GPIO_WritePin(GPIOA, LED_R_Pin, GPIO_PIN_RESET);
-        HAL_Delay(500);
+        HAL_Delay(200);
         HAL_GPIO_TogglePin(GPIOA, LED_R_Pin);
       }
       while(HAL_GPIO_ReadPin(GPIOC, KEY2_Pin) == GPIO_PIN_SET);
